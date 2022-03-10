@@ -6,7 +6,7 @@ export class PostDTO {
   @Field(type => Int)
   id: number;
 
-  @Field()
+  @Field(type => String)
   title: string;
 
   @Field(type => [UserDTO])

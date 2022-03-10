@@ -21,6 +21,6 @@ export class UserDTO {
   @Field(type => Date, { nullable: true })
   updated_at: Date;
 
-  @Field(type => [PostDTO])
-  posts: PostDTO[];
+  @Field(type => [PostDTO], { nullable: true })
+  posts?: PostDTO[];
 }
