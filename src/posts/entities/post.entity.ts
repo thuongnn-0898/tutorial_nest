@@ -2,7 +2,7 @@ import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { User } from 'src/users/entities/user.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
+@Entity('posts')
 @ObjectType()
 export class Post {
   @PrimaryGeneratedColumn()
@@ -13,7 +13,9 @@ export class Post {
   @Field()
   title: string;
 
-  @OneToMany(() => User, user => user.posts)
+  @OneToMany(() => User, user => user.posts, {
+    cascade: true,
+  })
   @Field(type => [User])
   user: User
 }

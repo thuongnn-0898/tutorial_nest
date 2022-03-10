@@ -1,27 +1,27 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { Post } from '../../posts/entities/post.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Post } from 'src/posts/entities/post.entity';
+import { Column, CreateDateColumn, Entity, Index, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
-@Entity()
-@ObjectType()
+@Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
-  @Field(type => Int)
   id: number;
 
   @Column()
-  @Field()
   name: string;
 
   @Column()
-  @Field()
+  @Index('users_email_index')
   email: string;
 
   @Column({ nullable: true })
-  @Field(type => Int, { nullable: true })
   age?: number;
 
+  @CreateDateColumn()
+  created_at?: Date;
+
+  @UpdateDateColumn()
+  updated_at?: Date;
+
   @ManyToOne(() => Post, post => post.user)
-  @Field(type => [Post])
-  posts: Post[];
+  posts?: Post[];
 }
