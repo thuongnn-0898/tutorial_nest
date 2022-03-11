@@ -1,4 +1,5 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { IsUUID } from 'class-validator';
 import { UserDTO } from 'src/users/dto/user.dto';
 
 @ObjectType()
@@ -9,8 +10,9 @@ export class PostDTO {
   @Field(type => String)
   title: string;
 
-  @Field(type => Int, { nullable: true })
-  userId?: number;
+  @Field(type => String)
+  @IsUUID()
+  userId?: string;
 
   @Field(type => UserDTO)
   user: UserDTO

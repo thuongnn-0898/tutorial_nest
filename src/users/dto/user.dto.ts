@@ -3,8 +3,8 @@ import { PostDTO } from 'src/posts/dto/post.dto';
 
 @ObjectType()
 export class UserDTO {
-  @Field(type => Int, { nullable: true })
-  id: number;
+  @Field(type => String, { nullable: true })
+  id: string;
 
   @Field(type => String, { nullable: true })
   first_name: string;

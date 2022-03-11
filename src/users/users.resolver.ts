@@ -7,6 +7,7 @@ import { UserDTO } from './dto/user.dto';
 import { plainToClass } from 'class-transformer';
 import { PostsService } from 'src/posts/posts.service';
 import { PostDTO } from 'src/posts/dto/post.dto';
+import { ParseUUIDPipe } from '@nestjs/common/pipes';
 
 @Resolver(() => UserDTO)
 export class UsersResolver {
@@ -26,7 +27,7 @@ export class UsersResolver {
   }
 
   @Query(() => UserDTO, { name: 'user' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  findOne(@Args('id', ParseUUIDPipe) id: string) {
     return this.usersService.findOne(id);
   }
 

@@ -28,7 +28,7 @@ export class UsersService {
     return this.usersRepository.save(createUserInput);
   }
 
-  async findOne(id: number): Promise<User> {
+  async findOne(id: string): Promise<User> {
     const user = await this.usersRepository.createQueryBuilder()
       .leftJoinAndSelect('User.posts', 'posts')
       .where({ id })
@@ -46,7 +46,7 @@ export class UsersService {
     // });
   }
 
-  async update(id: number, updateUserInput: UpdateUserInput): Promise<User> {
+  async update(id: string, updateUserInput: UpdateUserInput): Promise<User> {
     await this.usersRepository.update(id, { ...updateUserInput });
     
     return await this.usersRepository.findOne(id);
