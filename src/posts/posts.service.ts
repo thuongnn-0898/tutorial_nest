@@ -34,7 +34,10 @@ export class PostsService {
 
   async findByUser(user: User): Promise<Post[]> {
     return await this.postsRepository.createQueryBuilder()
+      .select(['Post.id', 'Post.title'])
+      .leftJoinAndSelect('Post.user', 'user')
       .where('"userId" = :userId', { userId: user.id })
+      .orderBy('Post.id', 'DESC')
       .getMany();
   }
 }

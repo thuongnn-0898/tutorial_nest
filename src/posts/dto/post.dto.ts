@@ -9,6 +9,9 @@ export class PostDTO {
   @Field(type => String)
   title: string;
 
-  @Field(type => [UserDTO])
+  @Field(type => Int, { nullable: true })
+  userId?: number;
+
+  @Field(type => UserDTO)
   user: UserDTO
 }

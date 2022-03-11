@@ -12,9 +12,14 @@ export class UsersService {
   async findAll(): Promise<User[]> {
     // query builder
     return await this.usersRepository.createQueryBuilder()
-      .select(['User.name'])
+      // .select(['User.*'])
+      .leftJoinAndSelect('User.posts', 'posts')
+      .orderBy('created_at', 'DESC')
       .getMany();
-    // return this.usersRepository.find();
+    // return this.usersRepository.find({ 
+    //   relations: ['posts'],
+    //   order: { id: 'DESC' }
+    // });
   }
 
   async create(createUserInput: CreateUserInput): Promise<User> {
@@ -25,6 +30,7 @@ export class UsersService {
 
   async findOne(id: number): Promise<User> {
     const user = await this.usersRepository.createQueryBuilder()
+      .leftJoinAndSelect('User.posts', 'posts')
       .where({ id })
       .getOneOrFail();
     
@@ -35,7 +41,9 @@ export class UsersService {
 
     // throw new NotFoundException('No record found');
 
-    // return this.usersRepository.findOneOrFail(id);
+    // return this.usersRepository.findOneOrFail(id, { 
+    //   relations: ['posts'],
+    // });
   }
 
   async update(id: number, updateUserInput: UpdateUserInput): Promise<User> {
@@ -47,7 +55,7 @@ export class UsersService {
   async remove(id: number): Promise<User> {
     const user = await this.usersRepository.findOneOrFail(id);
 
-    await this.usersRepository.delete(id);
+    await this.usersRepository.softDelete(id);
 
     return user;
   }

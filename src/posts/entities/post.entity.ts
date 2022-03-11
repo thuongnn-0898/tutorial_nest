@@ -1,5 +1,5 @@
 import { User } from 'src/users/entities/user.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('posts')
 export class Post {
@@ -13,4 +13,7 @@ export class Post {
     cascade: true,
   })
   user: User
+
+  @DeleteDateColumn()
+  deleted_at: Date;
 }

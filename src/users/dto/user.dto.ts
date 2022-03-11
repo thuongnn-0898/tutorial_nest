@@ -7,7 +7,13 @@ export class UserDTO {
   id: number;
 
   @Field(type => String, { nullable: true })
-  name: string;
+  first_name: string;
+
+  @Field(type => String, { nullable: true })
+  last_name: string;
+
+  @Field(type => String, { nullable: true })
+  full_name: string;
 
   @Field(type => String, { nullable: true })
   email: string;

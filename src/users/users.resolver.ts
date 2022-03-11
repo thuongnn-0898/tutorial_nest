@@ -44,8 +44,8 @@ export class UsersResolver {
     return plainToClass(UserDTO, user);
   }
 
-  @ResolveField('posts',() => [PostDTO])
-  async posts(@Parent() user: User) {
-    return this.postService.findByUser(user)
-  }
+  // @ResolveField('posts',() => [PostDTO])
+  // async posts(@Parent() user: User) {
+  //   return this.postService.findByUser(user)
+  // }
 }
