@@ -7,25 +7,25 @@ import {
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
-import { User } from './user.entity';
+import { UserEntity } from './user.entity';
 
 @EventSubscriber()
-export class UserSubscriber implements EntitySubscriberInterface<User> {
+export class UserSubscriber implements EntitySubscriberInterface<UserEntity> {
   readonly saltOrRounds: number = 10;
   constructor(connection: Connection) {
     connection.subscribers.push(this);
   }
 
   listenTo() {
-    return User;
+    return UserEntity;
   }
 
-  async beforeInsert(event: InsertEvent<User>): Promise<any> {
+  async beforeInsert(event: InsertEvent<UserEntity>): Promise<any> {
     const password = await bcrypt.hash(event.entity.password, this.saltOrRounds);
     event.entity.password = password
   }
 
-  async beforeUpdate(event: UpdateEvent<User>): Promise<any> {
+  async beforeUpdate(event: UpdateEvent<UserEntity>): Promise<any> {
     const password = await bcrypt.hash(event.entity.password, this.saltOrRounds);
     event.entity.password = password
   }

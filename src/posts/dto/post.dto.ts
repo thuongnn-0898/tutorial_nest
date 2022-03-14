@@ -4,16 +4,16 @@ import { UserDTO } from 'src/users/dto/user.dto';
 
 @ObjectType()
 export class PostDTO {
-  @Field(type => Int)
-  id: number;
+  @Field(() => String)
+  id: string;
 
-  @Field(type => String)
+  @Field(() => String)
   title: string;
 
-  @Field(type => String)
+  @Field(() => String)
   @IsUUID()
-  userId?: string;
+  user_id?: string;
 
-  @Field(type => UserDTO)
+  @Field(() => UserDTO)
   user: UserDTO
 }

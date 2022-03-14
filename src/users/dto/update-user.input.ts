@@ -10,6 +10,6 @@ export class UpdateUserInput extends PartialType(CreateUserInput) {
 
   @MinLength(6)
   @MaxLength(32)
-  @Field(type => String, { nullable: true })
+  @Field(() => String, { nullable: true })
   password: string;
 }

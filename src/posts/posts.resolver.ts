@@ -3,6 +3,7 @@ import { PostsService } from './posts.service';
 import { CreatePostInput } from './dto/create-post.input';
 import { UpdatePostInput } from './dto/update-post.input';
 import { PostDTO } from './dto/post.dto';
+import { ParseUUIDPipe } from '@nestjs/common';
 
 @Resolver(() => PostDTO)
 export class PostsResolver {
@@ -15,11 +16,13 @@ export class PostsResolver {
 
   @Query(() => [PostDTO], { name: 'posts' })
   findAll() {
-    return this.postsService.findAll();
+    const result = this.postsService.findAll();
+
+    return result;
   }
 
   @Query(() => PostDTO, { name: 'post' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  findOne(@Args('id', ParseUUIDPipe) id: string) {
     return this.postsService.findOne(id);
   }
 
@@ -29,7 +32,7 @@ export class PostsResolver {
   }
 
   @Mutation(() => PostDTO)
-  removePost(@Args('id', { type: () => Int }) id: number) {
+  removePost(@Args('id', ParseUUIDPipe) id: string) {
     return this.postsService.remove(id);
   }
 }

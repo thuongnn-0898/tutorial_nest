@@ -1,19 +1,20 @@
 import { Exclude, Expose } from 'class-transformer';
-import { Post } from 'src/posts/entities/post.entity';
-import { 
+import { PostEntity } from 'src/posts/entities/post.entity';
+import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
   Generated,
   Index,
+  JoinColumn,
   OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn 
+  UpdateDateColumn
 } from 'typeorm';
 
 @Entity('users')
-export class User {
+export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
   @Generated('uuid')
   id: string;
@@ -44,12 +45,11 @@ export class User {
   @DeleteDateColumn()
   deleted_at: Date;
 
-  @OneToMany(() => Post, post => post.user)
-  posts?: Post[];
+  @OneToMany(() => PostEntity, post => post.user)
+  posts?: PostEntity[];
 
   @Expose()
-  get full_name(): string
-  {
+  get full_name(): string {
     return `${this.first_name} ${this.last_name}`;
   }
 }

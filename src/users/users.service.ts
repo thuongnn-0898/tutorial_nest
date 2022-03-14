@@ -1,24 +1,24 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Post } from 'src/posts/entities/post.entity';
+import { PostEntity } from 'src/posts/entities/post.entity';
 import { Connection, Repository } from 'typeorm';
 import { CreateUserMultiPostsInput } from './dto/create-user-multi-posts.input';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
-import { User } from './entities/user.entity';
+import { UserEntity } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User) private usersRepository: Repository<User>,
+    @InjectRepository(UserEntity) private usersRepository: Repository<UserEntity>,
     private connection: Connection
   ) { }
 
-  async findAll(): Promise<User[]> {
+  async findAll(): Promise<UserEntity[]> {
     // query builder
-    return await this.usersRepository.createQueryBuilder()
+    return await this.usersRepository.createQueryBuilder('users')
       // .select(['User.*'])
-      .leftJoinAndSelect('User.posts', 'posts')
+      .leftJoinAndSelect('users.posts', 'posts')
       .orderBy('created_at', 'DESC')
       .getMany();
     // return this.usersRepository.find({
@@ -27,15 +27,15 @@ export class UsersService {
     // });
   }
 
-  async create(createUserInput: CreateUserInput): Promise<User> {
+  async create(createUserInput: CreateUserInput): Promise<UserEntity> {
     this.usersRepository.create(createUserInput);
 
     return this.usersRepository.save(createUserInput);
   }
 
-  async findOne(id: string): Promise<User> {
-    const user = await this.usersRepository.createQueryBuilder()
-      .leftJoinAndSelect('User.posts', 'posts')
+  async findOne(id: string): Promise<UserEntity> {
+    const user = await this.usersRepository.createQueryBuilder('users')
+      .leftJoinAndSelect('users.posts', 'posts')
       .where({ id })
       .getOneOrFail();
 
@@ -51,13 +51,13 @@ export class UsersService {
     // });
   }
 
-  async update(id: string, updateUserInput: UpdateUserInput): Promise<User> {
+  async update(id: string, updateUserInput: UpdateUserInput): Promise<UserEntity> {
     await this.usersRepository.update(id, { ...updateUserInput });
 
     return await this.usersRepository.findOne(id);
   }
 
-  async remove(id: number): Promise<User> {
+  async remove(id: string): Promise<UserEntity> {
     const user = await this.usersRepository.findOneOrFail(id);
 
     await this.usersRepository.softDelete(id);
@@ -66,11 +66,13 @@ export class UsersService {
   }
 
 
-  async createUserMultiPost(data: CreateUserMultiPostsInput): Promise<User> {
+  async createUserMultiPost(data: CreateUserMultiPostsInput): Promise<UserEntity> {
     return this.connection.transaction(async manager => {
-      const user = await manager.save(User, data);
-
-      data.posts.forEach(async post => await manager.save(Post, { ...post, user }));
+      const user = await manager.save(UserEntity, data);
+      const posts = data.posts.map(post => {
+        return { ...post, user }
+      })
+      await manager.save(PostEntity, posts)
 
       return user;
     })

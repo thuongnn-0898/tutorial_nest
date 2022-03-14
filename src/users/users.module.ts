@@ -4,12 +4,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersService } from './users.service';
 import { PostsService } from 'src/posts/posts.service';
 import { UsersResolver } from './users.resolver';
-import { User } from './entities/user.entity';
-import { Post } from 'src/posts/entities/post.entity';
+import { UserEntity } from './entities/user.entity';
+import { PostEntity } from 'src/posts/entities/post.entity';
 import { UserSubscriber } from './entities/user.subcriber';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Post])],
+  imports: [TypeOrmModule.forFeature([UserEntity, PostEntity])],
   providers: [UsersResolver, UsersService, PostsService, UserSubscriber],
   exports: [UsersService],
 })

@@ -3,7 +3,7 @@ import { ParseUUIDPipe } from '@nestjs/common/pipes';
 import { plainToClass } from 'class-transformer';
 
 import { UsersService } from './users.service';
-import { User } from './entities/user.entity';
+import { UserEntity } from './entities/user.entity';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { UserDTO } from './dto/user.dto';
@@ -16,7 +16,7 @@ export class UsersResolver {
   ) { }
 
   @Mutation(() => UserDTO)
-  createUser(@Args('createUserInput') createUserInput: CreateUserInput): Promise<User> {
+  createUser(@Args('createUserInput') createUserInput: CreateUserInput): Promise<UserEntity> {
     return this.usersService.create(createUserInput);
   }
 
@@ -38,7 +38,7 @@ export class UsersResolver {
   }
 
   @Mutation(() => UserDTO)
-  removeUser(@Args('id', { type: () => Int }) id: number) {
+  removeUser(@Args('id', ParseUUIDPipe) id: string) {
     const user = this.usersService.remove(id);
 
     return plainToClass(UserDTO, user);

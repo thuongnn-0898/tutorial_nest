@@ -7,28 +7,28 @@ export class CreateUserInput {
   @MinLength(5)
   @MaxLength(40)
   @IsNotEmpty()
-  @Field(type => String)
+  @Field(() => String)
   first_name: string;
 
   @IsAlpha()
   @MinLength(5)
   @MaxLength(40)
   @IsNotEmpty()
-  @Field(type => String)
+  @Field(() => String)
   last_name: string;
 
   @IsEmail()
   @IsNotEmpty()
-  @Field(type => String)
+  @Field(() => String)
   email: string;
 
   @MinLength(6)
   @MaxLength(32)
   @IsNotEmpty()
-  @Field(type => String)
+  @Field(() => String)
   password: string;
 
   @IsNumber()
-  @Field(type => Int, { nullable: true })
+  @Field(() => Int, { nullable: true })
   age?: number;
 }
