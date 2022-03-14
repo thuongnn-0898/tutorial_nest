@@ -1,13 +1,18 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import {  Repository } from 'typeorm';
+import { Post } from 'src/posts/entities/post.entity';
+import { Connection, Repository } from 'typeorm';
+import { CreateUserMultiPostsInput } from './dto/create-user-multi-posts.input';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectRepository(User) private usersRepository: Repository<User>) {}
+  constructor(
+    @InjectRepository(User) private usersRepository: Repository<User>,
+    private connection: Connection
+  ) { }
 
   async findAll(): Promise<User[]> {
     // query builder
@@ -16,7 +21,7 @@ export class UsersService {
       .leftJoinAndSelect('User.posts', 'posts')
       .orderBy('created_at', 'DESC')
       .getMany();
-    // return this.usersRepository.find({ 
+    // return this.usersRepository.find({
     //   relations: ['posts'],
     //   order: { id: 'DESC' }
     // });
@@ -33,7 +38,7 @@ export class UsersService {
       .leftJoinAndSelect('User.posts', 'posts')
       .where({ id })
       .getOneOrFail();
-    
+
     return user;
     // if (user) {
     //   return user
@@ -41,14 +46,14 @@ export class UsersService {
 
     // throw new NotFoundException('No record found');
 
-    // return this.usersRepository.findOneOrFail(id, { 
+    // return this.usersRepository.findOneOrFail(id, {
     //   relations: ['posts'],
     // });
   }
 
   async update(id: string, updateUserInput: UpdateUserInput): Promise<User> {
     await this.usersRepository.update(id, { ...updateUserInput });
-    
+
     return await this.usersRepository.findOne(id);
   }
 
@@ -58,5 +63,16 @@ export class UsersService {
     await this.usersRepository.softDelete(id);
 
     return user;
+  }
+
+
+  async createUserMultiPost(data: CreateUserMultiPostsInput): Promise<User> {
+    return this.connection.transaction(async manager => {
+      const user = await manager.save(User, data);
+
+      data.posts.forEach(async post => await manager.save(Post, { ...post, user }));
+
+      return user;
+    })
   }
 }
