@@ -9,6 +9,9 @@ export class Post {
   @Column()
   title: string;
 
+  @Column()
+  userId: number;
+
   @ManyToOne(() => User, user => user.posts, {
     cascade: true,
   })

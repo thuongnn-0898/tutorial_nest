@@ -5,10 +5,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { PostsService } from 'src/posts/posts.service';
 import { Post } from 'src/posts/entities/post.entity';
-import { UserSubscriber } from './entities/user.subscriber';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User, Post])],
-  providers: [UsersResolver, UsersService, PostsService, UserSubscriber]
+  providers: [UsersResolver, UsersService, PostsService]
 })
-export class UsersModule {}
+export class UsersModule { }
