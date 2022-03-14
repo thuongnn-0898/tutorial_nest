@@ -10,7 +10,7 @@ export class Post {
   title: string;
 
   @Column()
-  userId: number;
+  userId: string;
 
   @ManyToOne(() => User, user => user.posts, {
     cascade: true,
