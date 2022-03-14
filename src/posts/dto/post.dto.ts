@@ -12,7 +12,7 @@ export class PostDTO {
 
   @Field(() => String)
   @IsUUID()
-  user_id?: string;
+  userId?: string;
 
   @Field(() => UserDTO)
   user: UserDTO

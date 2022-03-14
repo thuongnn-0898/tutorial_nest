@@ -65,7 +65,6 @@ export class UsersService {
     return user;
   }
 
-
   async createUserMultiPost(data: CreateUserMultiPostsInput): Promise<UserEntity> {
     return this.connection.transaction(async manager => {
       const user = await manager.save(UserEntity, data);
@@ -76,5 +75,11 @@ export class UsersService {
 
       return user;
     })
+  }
+
+  async userExists(fieldName: string, value: string): Promise<boolean> {
+    const result = await this.connection.query(`SELECT EXISTS(SELECT 1 FROM users where ${fieldName} = '${value}')`);
+
+    return result[0].exists;
   }
 }

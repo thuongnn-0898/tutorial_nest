@@ -10,7 +10,7 @@ export class PostEntity {
   title: string;
 
   @Column({ name: 'user_id' })
-  user_id: string;
+  userId: string;
 
   @ManyToOne(() => UserEntity, user => user.posts, {
     cascade: true,

@@ -45,8 +45,8 @@ export class UserEntity {
   @DeleteDateColumn()
   deleted_at: Date;
 
-  @OneToMany(() => PostEntity, post => post.user)
-  posts?: PostEntity[];
+  @OneToMany(() => PostEntity, post => post.user, { nullable: true })
+  posts: PostEntity[];
 
   @Expose()
   get full_name(): string {
