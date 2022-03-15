@@ -22,12 +22,14 @@ export class UsersResolver {
 
   @Query(() => [UserDTO], { name: 'users' })
   findAll() {
-    return this.usersService.findAll();
+    const users = this.usersService.findAll();
+    return plainToClass(UserDTO, users);
   }
 
   @Query(() => UserDTO, { name: 'user' })
   findOne(@Args('id', ParseUUIDPipe) id: string) {
-    return this.usersService.findOne(id);
+    const user = this.usersService.findOne(id);
+    return plainToClass(UserDTO, user);
   }
 
   @Mutation(() => UserDTO)

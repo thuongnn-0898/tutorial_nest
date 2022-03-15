@@ -18,6 +18,6 @@ export class PostEntity {
   @JoinColumn({ name: 'user_id' })
   user: UserEntity
 
-  @DeleteDateColumn()
-  deleted_at: Date;
+  @DeleteDateColumn({ name: 'deleted_at' })
+  deletedAt: Date;
 }

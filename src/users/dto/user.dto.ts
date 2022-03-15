@@ -1,4 +1,5 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { Expose, Transform } from 'class-transformer';
 import { PostDTO } from 'src/posts/dto/post.dto';
 
 @ObjectType()
@@ -7,13 +8,14 @@ export class UserDTO {
   id: string;
 
   @Field(() => String, { nullable: true })
-  first_name: string;
+  firstName: string;
 
   @Field(() => String, { nullable: true })
-  last_name: string;
+  lastName: string;
 
   @Field(() => String, { nullable: true })
-  full_name: string;
+  @Expose()
+  fullName: string;
 
   @Field(() => String, { nullable: true })
   email: string;
@@ -22,10 +24,10 @@ export class UserDTO {
   age?: number;
 
   @Field(() => Date, { nullable: true })
-  created_at: Date;
+  createdAt: Date;
 
   @Field(() => Date, { nullable: true })
-  updated_at: Date;
+  updatedAt: Date;
 
   @Field(() => [PostDTO], { nullable: true })
   posts?: PostDTO[];

@@ -16,7 +16,7 @@ export class UsersService {
 
   async findAll(): Promise<UserEntity[]> {
     // query builder
-    return await this.usersRepository.createQueryBuilder('users')
+    const result = await this.usersRepository.createQueryBuilder('users')
       // .select(['User.*'])
       .leftJoinAndSelect('users.posts', 'posts')
       .orderBy('created_at', 'DESC')
@@ -25,6 +25,7 @@ export class UsersService {
     //   relations: ['posts'],
     //   order: { id: 'DESC' }
     // });
+    return result;
   }
 
   async create(createUserInput: CreateUserInput): Promise<UserEntity> {

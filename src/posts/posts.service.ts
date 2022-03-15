@@ -28,7 +28,7 @@ export class PostsService {
       .getMany();
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<PostEntity> {
     // return await this.postsRepository.findOneOrFail(id, { relations: ['user'] });
 
     return await this.postsRepository.createQueryBuilder()
@@ -43,7 +43,6 @@ export class PostsService {
 
   async remove(id: string): Promise<PostEntity> {
     const post = await this.postsRepository.findOneOrFail(id);
-
     await this.postsRepository.softDelete(id);
 
     return post;

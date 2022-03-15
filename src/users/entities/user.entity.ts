@@ -7,7 +7,6 @@ import {
   Entity,
   Generated,
   Index,
-  JoinColumn,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn
@@ -19,11 +18,11 @@ export class UserEntity {
   @Generated('uuid')
   id: string;
 
-  @Column()
-  first_name: string;
+  @Column({ name: 'first_name' })
+  firstName: string;
 
-  @Column()
-  last_name: string;
+  @Column({ name: 'last_name' })
+  lastName: string;
 
   @Column()
   @Index('users_email_index')
@@ -36,20 +35,20 @@ export class UserEntity {
   @Column({ nullable: true })
   age?: number;
 
-  @CreateDateColumn()
-  created_at?: Date;
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt?: Date;
 
-  @UpdateDateColumn()
-  updated_at?: Date;
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt?: Date;
 
-  @DeleteDateColumn()
-  deleted_at: Date;
+  @DeleteDateColumn({ name: 'deleted_at' })
+  deletedAt: Date;
 
   @OneToMany(() => PostEntity, post => post.user, { nullable: true })
   posts: PostEntity[];
 
   @Expose()
-  get full_name(): string {
-    return `${this.first_name} ${this.last_name}`;
+  get fullName(): string {
+    return `${this.firstName} ${this.lastName}`;
   }
 }
