@@ -28,8 +28,6 @@ export class UsersService {
   }
 
   async create(createUserInput: CreateUserInput): Promise<UserEntity> {
-    this.usersRepository.create(createUserInput);
-
     return this.usersRepository.save(createUserInput);
   }
 
@@ -52,9 +50,7 @@ export class UsersService {
   }
 
   async update(id: string, updateUserInput: UpdateUserInput): Promise<UserEntity> {
-    await this.usersRepository.update(id, { ...updateUserInput });
-
-    return await this.usersRepository.findOne(id);
+    return await this.usersRepository.save(updateUserInput);
   }
 
   async remove(id: string): Promise<UserEntity> {

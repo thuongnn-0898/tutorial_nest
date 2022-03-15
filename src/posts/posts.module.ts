@@ -10,6 +10,5 @@ import { UserEntity } from '../users/entities/user.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([PostEntity, UserEntity])],
   providers: [PostsResolver, PostsService, UsersService],
-  exports: [PostsService]
 })
 export class PostsModule { }

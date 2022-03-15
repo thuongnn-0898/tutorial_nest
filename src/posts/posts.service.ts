@@ -18,32 +18,27 @@ export class PostsService {
   async create(createPostInput: CreatePostInput): Promise<PostEntity> {
     // await this.userService.findOne(createPostInput.user_id);
     await this.checkUserCanSetPost(createPostInput.userId)
-    this.postsRepository.create(createPostInput);
-
     return await this.postsRepository.save(createPostInput);
   }
 
   async findAll(): Promise<PostEntity[]> {
     // return await this.postsRepository.find({ relations: ['user'] });
-    return await this.postsRepository.createQueryBuilder('Post')
-      .innerJoinAndSelect('Post.user', 'user', 'user.deleted_at is null')
+    return await this.postsRepository.createQueryBuilder()
+      .innerJoinAndSelect('PostEntity.user', 'user', 'user.deleted_at is null')
       .getMany();
   }
 
   async findOne(id: string) {
     // return await this.postsRepository.findOneOrFail(id, { relations: ['user'] });
 
-    return await this.postsRepository.createQueryBuilder('Post')
-      .innerJoinAndSelect('Post.user', 'user', 'user.deleted_at is null')
+    return await this.postsRepository.createQueryBuilder()
+      .innerJoinAndSelect('PostEntity.user', 'user', 'user.deleted_at is null')
       .where({ id })
       .getOneOrFail();
   }
 
   async update(id: string, updatePostInput: UpdatePostInput): Promise<PostEntity> {
-    await this.checkUserCanSetPost(updatePostInput.userId)
-    await this.postsRepository.update(id, { ...updatePostInput });
-
-    return await this.postsRepository.findOne(id);
+    return this.postsRepository.save(updatePostInput);
   }
 
   async remove(id: string): Promise<PostEntity> {
@@ -55,8 +50,8 @@ export class PostsService {
   }
 
   async findByUser(user: UserEntity): Promise<PostEntity[]> {
-    return await this.postsRepository.createQueryBuilder('Post')
-      .select(['Post.id', 'Post.title'])
+    return await this.postsRepository.createQueryBuilder()
+      .select(['PostEntity.id', 'Post.title'])
       .innerJoinAndSelect('Post.user', 'user', 'user.deleted_at is null')
       .where({ userId: user.id })
       .orderBy('Post.id', 'DESC')

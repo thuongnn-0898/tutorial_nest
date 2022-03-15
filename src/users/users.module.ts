@@ -11,6 +11,5 @@ import { UserSubscriber } from './entities/user.subcriber';
 @Module({
   imports: [TypeOrmModule.forFeature([UserEntity, PostEntity])],
   providers: [UsersResolver, UsersService, PostsService, UserSubscriber],
-  exports: [UsersService],
 })
 export class UsersModule { }
