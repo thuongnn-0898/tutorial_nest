@@ -75,6 +75,7 @@ export class UsersResolver {
     }
   })
   postAdded() {
+    // contiue handle ...
     return this.pubSub.asyncIterator('postAdded');
   }
 
