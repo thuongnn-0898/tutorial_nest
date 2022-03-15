@@ -1,6 +1,7 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int, Subscription, Context } from '@nestjs/graphql';
 import { ParseUUIDPipe } from '@nestjs/common/pipes';
 import { plainToClass } from 'class-transformer';
+import { RedisPubSub } from 'graphql-redis-subscriptions';
 
 import { UsersService } from './users.service';
 import { UserEntity } from './entities/user.entity';
@@ -8,11 +9,15 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { UserDTO } from './dto/user.dto';
 import { CreateUserMultiPostsInput } from './dto/create-user-multi-posts.input';
+import { PostDTO } from 'src/posts/dto/post.dto';
+import { Inject } from '@nestjs/common';
+import { PUB_SUB } from '../pubSub.module';
 
 @Resolver(() => UserDTO)
 export class UsersResolver {
   constructor(
-    private readonly usersService: UsersService
+    private readonly usersService: UsersService,
+    @Inject(PUB_SUB) private readonly pubSub: RedisPubSub
   ) { }
 
   @Mutation(() => UserDTO)
@@ -53,6 +58,22 @@ export class UsersResolver {
     const user = this.usersService.createUserMultiPost(data);
 
     return plainToClass(UserDTO, user);
+  }
+
+  @Subscription(() => PostDTO, {
+    name: 'postAdded',
+    filter: (payload, variables) => {
+      return payload.postAdded.title === 'Hello world!';
+    },
+    resolve: (value) => {
+      return {
+        ...value.postAdded,
+        title: `Title: ${value.postAdded.title}`
+      }
+    }
+  })
+  postAdded() {
+    return this.pubSub.asyncIterator('postAdded');
   }
 
   // @ResolveField('posts',() => [PostDTO])

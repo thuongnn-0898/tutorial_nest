@@ -8,13 +8,15 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { PostsModule } from './posts/posts.module';
 import config from './config/database';
+import { PubSub } from 'graphql-subscriptions';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(config),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      driver: ApolloDriver
+      driver: ApolloDriver,
+      installSubscriptionHandlers: true,
     }),
     UsersModule,
     PostsModule,
@@ -23,4 +25,4 @@ import config from './config/database';
   providers: [AppService],
 })
 
-export class AppModule {}
+export class AppModule { }
