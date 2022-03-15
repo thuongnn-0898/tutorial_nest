@@ -1,32 +1,34 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { Expose, Transform } from 'class-transformer';
 import { PostDTO } from 'src/posts/dto/post.dto';
 
 @ObjectType()
 export class UserDTO {
-  @Field(type => String, { nullable: true })
+  @Field(() => String, { nullable: true })
   id: string;
 
-  @Field(type => String, { nullable: true })
-  first_name: string;
+  @Field(() => String, { nullable: true })
+  firstName: string;
 
-  @Field(type => String, { nullable: true })
-  last_name: string;
+  @Field(() => String, { nullable: true })
+  lastName: string;
 
-  @Field(type => String, { nullable: true })
-  full_name: string;
+  @Field(() => String, { nullable: true })
+  @Expose()
+  fullName: string;
 
-  @Field(type => String, { nullable: true })
+  @Field(() => String, { nullable: true })
   email: string;
 
-  @Field(type => Int, { nullable: true })
+  @Field(() => Int, { nullable: true })
   age?: number;
 
-  @Field(type => Date, { nullable: true })
-  created_at: Date;
+  @Field(() => Date, { nullable: true })
+  createdAt: Date;
 
-  @Field(type => Date, { nullable: true })
-  updated_at: Date;
+  @Field(() => Date, { nullable: true })
+  updatedAt: Date;
 
-  @Field(type => [PostDTO], { nullable: true })
+  @Field(() => [PostDTO], { nullable: true })
   posts?: PostDTO[];
 }

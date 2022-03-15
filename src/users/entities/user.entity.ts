@@ -1,6 +1,6 @@
 import { Exclude, Expose } from 'class-transformer';
-import { Post } from 'src/posts/entities/post.entity';
-import { 
+import { PostEntity } from 'src/posts/entities/post.entity';
+import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -9,20 +9,20 @@ import {
   Index,
   OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn 
+  UpdateDateColumn
 } from 'typeorm';
 
 @Entity('users')
-export class User {
+export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
   @Generated('uuid')
   id: string;
 
-  @Column()
-  first_name: string;
+  @Column({ name: 'first_name' })
+  firstName: string;
 
-  @Column()
-  last_name: string;
+  @Column({ name: 'last_name' })
+  lastName: string;
 
   @Column()
   @Index('users_email_index')
@@ -35,21 +35,20 @@ export class User {
   @Column({ nullable: true })
   age?: number;
 
-  @CreateDateColumn()
-  created_at?: Date;
+  @CreateDateColumn({ name: 'created_at' })
+  createdAt?: Date;
 
-  @UpdateDateColumn()
-  updated_at?: Date;
+  @UpdateDateColumn({ name: 'updated_at' })
+  updatedAt?: Date;
 
-  @DeleteDateColumn()
-  deleted_at: Date;
+  @DeleteDateColumn({ name: 'deleted_at' })
+  deletedAt: Date;
 
-  @OneToMany(() => Post, post => post.user)
-  posts?: Post[];
+  @OneToMany(() => PostEntity, post => post.user, { nullable: true })
+  posts: PostEntity[];
 
   @Expose()
-  get full_name(): string
-  {
-    return `${this.first_name} ${this.last_name}`;
+  get fullName(): string {
+    return `${this.firstName} ${this.lastName}`;
   }
 }

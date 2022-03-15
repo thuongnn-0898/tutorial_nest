@@ -1,22 +1,23 @@
-import { User } from 'src/users/entities/user.entity';
-import { Column, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { UserEntity } from '../../users/entities/user.entity';
+import { Column, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('posts')
-export class Post {
-  @PrimaryGeneratedColumn()
-  id: number;
+export class PostEntity {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   title: string;
 
-  @Column()
-  userId: number;
+  @Column({ name: 'user_id' })
+  userId: string;
 
-  @ManyToOne(() => User, user => user.posts, {
+  @ManyToOne(() => UserEntity, user => user.posts, {
     cascade: true,
   })
-  user: User
+  @JoinColumn({ name: 'user_id' })
+  user: UserEntity
 
-  @DeleteDateColumn()
-  deleted_at: Date;
+  @DeleteDateColumn({ name: 'deleted_at' })
+  deletedAt: Date;
 }

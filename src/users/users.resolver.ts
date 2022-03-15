@@ -1,34 +1,35 @@
-import { Resolver, Query, Mutation, Args, Int, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { ParseUUIDPipe } from '@nestjs/common/pipes';
+import { plainToClass } from 'class-transformer';
+
 import { UsersService } from './users.service';
-import { User } from './entities/user.entity';
+import { UserEntity } from './entities/user.entity';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { UserDTO } from './dto/user.dto';
-import { plainToClass } from 'class-transformer';
-import { PostsService } from 'src/posts/posts.service';
-import { PostDTO } from 'src/posts/dto/post.dto';
-import { ParseUUIDPipe } from '@nestjs/common/pipes';
+import { CreateUserMultiPostsInput } from './dto/create-user-multi-posts.input';
 
 @Resolver(() => UserDTO)
 export class UsersResolver {
   constructor(
-    private readonly usersService: UsersService,
-    private readonly postService: PostsService
-  ) {}
+    private readonly usersService: UsersService
+  ) { }
 
   @Mutation(() => UserDTO)
-  createUser(@Args('createUserInput') createUserInput: CreateUserInput): Promise<User> {
+  createUser(@Args('createUserInput') createUserInput: CreateUserInput): Promise<UserEntity> {
     return this.usersService.create(createUserInput);
   }
 
   @Query(() => [UserDTO], { name: 'users' })
   findAll() {
-    return this.usersService.findAll();
+    const users = this.usersService.findAll();
+    return plainToClass(UserDTO, users);
   }
 
   @Query(() => UserDTO, { name: 'user' })
   findOne(@Args('id', ParseUUIDPipe) id: string) {
-    return this.usersService.findOne(id);
+    const user = this.usersService.findOne(id);
+    return plainToClass(UserDTO, user);
   }
 
   @Mutation(() => UserDTO)
@@ -39,8 +40,17 @@ export class UsersResolver {
   }
 
   @Mutation(() => UserDTO)
-  removeUser(@Args('id', { type: () => Int }) id: number) {
+  removeUser(@Args('id', ParseUUIDPipe) id: string) {
     const user = this.usersService.remove(id);
+
+    return plainToClass(UserDTO, user);
+  }
+
+  @Mutation(() => UserDTO)
+  createUserAndPost(
+    @Args('data') data: CreateUserMultiPostsInput,
+  ) {
+    const user = this.usersService.createUserMultiPost(data);
 
     return plainToClass(UserDTO, user);
   }
