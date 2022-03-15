@@ -80,4 +80,8 @@ export class UsersService {
 
     return result[0].exists;
   }
+
+  async findByEmail(email: string): Promise<UserEntity | undefined> {
+    return await this.usersRepository.findOne({ email });
+  }
 }

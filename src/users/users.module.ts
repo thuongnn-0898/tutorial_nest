@@ -12,7 +12,7 @@ import { PubSubModule } from '../pubSub.module';
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserEntity, PostEntity]),
-    PubSubModule
+    PubSubModule,
   ],
   providers: [
     UsersResolver,
@@ -20,5 +20,6 @@ import { PubSubModule } from '../pubSub.module';
     PostsService,
     UserSubscriber,
   ],
+  exports: [UsersService]
 })
 export class UsersModule { }
