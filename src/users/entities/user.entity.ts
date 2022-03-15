@@ -1,5 +1,5 @@
 import { Exclude, Expose } from 'class-transformer';
-import { PostEntity } from 'src/posts/entities/post.entity';
+import { PostEntity } from '../../posts/entities/post.entity';
 import {
   Column,
   CreateDateColumn,

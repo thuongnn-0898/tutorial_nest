@@ -1,6 +1,7 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
+
 import { IsUUID } from 'class-validator';
-import { UserDTO } from 'src/users/dto/user.dto';
+import { UserDTO } from '../../users/dto/user.dto';
 
 @ObjectType()
 export class PostDTO {

@@ -6,9 +6,10 @@ import { PostsResolver } from './posts.resolver';
 import { PostEntity } from './entities/post.entity';
 import { UsersService } from '../users/users.service';
 import { UserEntity } from '../users/entities/user.entity';
+import { PubSubModule } from '../pubSub.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([PostEntity, UserEntity])],
+  imports: [TypeOrmModule.forFeature([PostEntity, UserEntity]), PubSubModule],
   providers: [PostsResolver, PostsService, UsersService],
 })
 export class PostsModule { }
