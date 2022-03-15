@@ -8,7 +8,6 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { PostsModule } from './posts/posts.module';
 import config from './config/database';
-import { PubSub } from 'graphql-subscriptions';
 
 @Module({
   imports: [

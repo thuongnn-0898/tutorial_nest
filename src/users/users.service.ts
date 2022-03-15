@@ -1,6 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PostEntity } from 'src/posts/entities/post.entity';
+
+import { PostEntity } from '../posts/entities/post.entity';
 import { Connection, Repository } from 'typeorm';
 import { CreateUserMultiPostsInput } from './dto/create-user-multi-posts.input';
 import { CreateUserInput } from './dto/create-user.input';

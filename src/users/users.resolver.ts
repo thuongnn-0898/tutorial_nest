@@ -9,7 +9,7 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { UserDTO } from './dto/user.dto';
 import { CreateUserMultiPostsInput } from './dto/create-user-multi-posts.input';
-import { PostDTO } from 'src/posts/dto/post.dto';
+import { PostDTO } from '../posts/dto/post.dto';
 import { Inject } from '@nestjs/common';
 import { PUB_SUB } from '../pubSub.module';
 
@@ -62,10 +62,12 @@ export class UsersResolver {
 
   @Subscription(() => PostDTO, {
     name: 'postAdded',
-    filter: (payload, variables) => {
-      return payload.postAdded.title === 'Hello world!';
+    filter: (payload, variables): boolean => {
+      // thoả mản điều kiện thì mới listen được
+      return true // payload.postAdded;
     },
-    resolve: (value) => {
+    resolve: value => {
+      // mutation dât trước khi trả về cho listening
       return {
         ...value.postAdded,
         title: `Title: ${value.postAdded.title}`

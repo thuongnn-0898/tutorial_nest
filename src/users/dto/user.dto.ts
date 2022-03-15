@@ -1,6 +1,6 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { Expose, Transform } from 'class-transformer';
-import { PostDTO } from 'src/posts/dto/post.dto';
+import { Expose } from 'class-transformer';
+import { PostDTO } from '../../posts/dto/post.dto';
 
 @ObjectType()
 export class UserDTO {

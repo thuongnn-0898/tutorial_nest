@@ -1,17 +1,17 @@
-import { Resolver, Query, Mutation, Args, ResolveField, Parent } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, ResolveField } from '@nestjs/graphql';
+import { Inject, ParseUUIDPipe } from '@nestjs/common';
 
 import { PostsService } from './posts.service';
 import { CreatePostInput } from './dto/create-post.input';
 import { UpdatePostInput } from './dto/update-post.input';
 import { PostDTO } from './dto/post.dto';
-import { Inject, ParseUUIDPipe } from '@nestjs/common';
-import { PUB_SUB } from 'src/pubSub.module';
+import { PUB_SUB } from '../pubSub.module';
 import { RedisPubSub } from 'graphql-redis-subscriptions';
-import { UserDTO } from 'src/users/dto/user.dto';
-import { UsersService } from 'src/users/users.service';
+import { UserDTO } from '../users/dto/user.dto';
+import { UsersService } from '../users/users.service';
 import { plainToClass } from 'class-transformer';
 import { PostEntity } from './entities/post.entity';
-import { UserEntity } from 'src/users/entities/user.entity';
+import { UserEntity } from '../users/entities/user.entity';
 
 @Resolver(() => PostDTO)
 export class PostsResolver {
