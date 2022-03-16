@@ -8,14 +8,14 @@ export class CreateUserInput {
   @MaxLength(40)
   @IsNotEmpty()
   @Field(() => String)
-  first_name: string;
+  firstName: string;
 
   @IsString()
   @MinLength(5)
   @MaxLength(40)
   @IsNotEmpty()
   @Field(() => String)
-  last_name: string;
+  lastName: string;
 
   @IsEmail()
   @IsNotEmpty()

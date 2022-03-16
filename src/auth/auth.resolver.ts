@@ -8,9 +8,10 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 
 @Resolver()
-@UseGuards(LocalAuthGuard)
 export class AuthResolver {
   constructor(private authService: AuthService) { }
+
+  @UseGuards(LocalAuthGuard)
   @Mutation(() => LoginResponse)
   login(
     @Args('loginInput') loginInput: LoginInput,
