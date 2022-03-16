@@ -1,19 +1,21 @@
 import { Resolver, Query, Mutation, Args, ResolveField } from '@nestjs/graphql';
-import { Inject, ParseUUIDPipe } from '@nestjs/common';
+import { Inject, ParseUUIDPipe, UseGuards } from '@nestjs/common';
+import { RedisPubSub } from 'graphql-redis-subscriptions';
 
 import { PostsService } from './posts.service';
 import { CreatePostInput } from './dto/create-post.input';
 import { UpdatePostInput } from './dto/update-post.input';
 import { PostDTO } from './dto/post.dto';
 import { PUB_SUB } from '../pubSub.module';
-import { RedisPubSub } from 'graphql-redis-subscriptions';
 import { UserDTO } from '../users/dto/user.dto';
 import { UsersService } from '../users/users.service';
 import { plainToClass } from 'class-transformer';
 import { PostEntity } from './entities/post.entity';
 import { UserEntity } from '../users/entities/user.entity';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Resolver(() => PostDTO)
+@UseGuards(JwtAuthGuard)
 export class PostsResolver {
   constructor(
     private readonly postsService: PostsService,
