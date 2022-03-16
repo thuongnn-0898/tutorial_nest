@@ -10,10 +10,12 @@ import { UpdateUserInput } from './dto/update-user.input';
 import { UserDTO } from './dto/user.dto';
 import { CreateUserMultiPostsInput } from './dto/create-user-multi-posts.input';
 import { PostDTO } from '../posts/dto/post.dto';
-import { Inject } from '@nestjs/common';
+import { Inject, UseGuards } from '@nestjs/common';
 import { PUB_SUB } from '../pubSub.module';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Resolver(() => UserDTO)
+@UseGuards(JwtAuthGuard)
 export class UsersResolver {
   constructor(
     private readonly usersService: UsersService,
